@@ -14,6 +14,6 @@ export default{
         return apiClient.get<EventItem[]>('/events')
     },
     getEventById(id: number): Promise<AxiosResponse<EventItem>>{
-        return apiClient.get<EventItem>('/events' +id.toString)
+        return apiClient.get<EventItem>('events/' +id.toString())
     }
 }
