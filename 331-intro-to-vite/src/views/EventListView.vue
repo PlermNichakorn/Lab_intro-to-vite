@@ -4,18 +4,29 @@ import Event from '@/types/Event'
 // import { ref } from 'vue'
 import{ ref, onMounted } from 'vue'
 import EventService from '@/services/EventService'
+import type { Axios, AxiosResponse } from 'axios';
 
 const events = ref<Event[]>(null)
-
-onMounted(() => {
-  EventService.getEvents()
-  .then((response) => {
-    events.value = response.data
-  })
-  .catch((error) => {
-    console.error('There was an error!', error)
-  })
+ 
+const props = defineProps({
+  page:{
+    type: Number,
+    required: true
+  }
 })
+EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
+  events.value = response.data
+})
+
+// onMounted(() => {
+//   EventService.getEvents()
+//   .then((response) => {
+//     events.value = response.data
+//   })
+//   .catch((error) => {
+//     console.error('There was an error!', error)
+//   })
+// })
 </script>
 
 <template>
