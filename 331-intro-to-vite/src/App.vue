@@ -8,6 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="wrapper">
       <nav>
+        <!-- 1.11. Update router-link to use the name of components instead of url  -->
         <RouterLink :to="{ name: 'event-list-view' }">Event</RouterLink> |
         <RouterLink :to="{ name: 'student' }">Student</RouterLink> |
         <RouterLink :to="{ name: 'about' }">About</RouterLink>
