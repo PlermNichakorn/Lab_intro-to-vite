@@ -5,9 +5,14 @@ import Event from '@/types/Event'
 import{ computed, ref, watchEffect } from 'vue'
 import EventService from '@/services/EventService'
 import type { Axios, AxiosResponse } from 'axios';
+import { RouterLink, useRoute } from 'vue-router';
 
-const events = ref<Event[]>(null)
+const page = computed(() => parseInt(route.query.page as string) || 1)
+const pageSize = computed(() => parseInt(route.query.size as string) || 2)
+const events = ref<Event[]>([]);
 const totalEvent = ref<number>(0)
+const route = useRoute();
+
 const props = defineProps({
   page:{
     type: Number,
@@ -17,18 +22,31 @@ const props = defineProps({
 EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
   events.value = response.data
 })
+
+const fetchEvents = () => {
+    EventService.getEvents(pageSize.value, page.value).then((response: AxiosResponse<EventItem[]>) => {
+        events.value = response.data
+        totalEvent.value = parseInt(response.headers['x-total-count'])
+    })
+}
+
+// watchEffect(() => {
+//   EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
+//   events.value = response.data
+//   totalEvent.value = response.headers['x-total-count']
+// })
+// })
+
 watchEffect(() => {
-  EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
-  events.value = response.data
-  totalEvent.value = response.headers['x-total-count']
-})
+    fetchEvents()
 })
 
 const hasNextPage = computed(() => {
   // first calculate the total page
-  const totalPages = Math.ceil(totalEvent.value / 2)
+  const totalPages = Math.ceil(totalEvent.value)
   return props.page.valueOf() < totalPages
 })
+
 
 // onMounted(() => {
 //   EventService.getEvents()
@@ -47,11 +65,11 @@ const hasNextPage = computed(() => {
   <div class="events">
     <EventCard v-for="event in events" :key="event.id" :event="event" />
     <div class="pagination">
-      <RouterLink :to="{ name: 'event-list-view', query: { page: page - 1 } }" rel="prev" v-if="page!=1" id="page-prev">
+      <RouterLink :to="{ name: 'event-list-view', query: { page: page - 1, size: pageSize } }" rel="prev" v-if="page!=1" id="page-prev">
       Prev Page
     </RouterLink>
 
-    <RouterLink :to="{ name: 'event-list-view', query: { page: page + 1 } }" rel="prev" v-if="hasNextPage" id="page-next">
+    <RouterLink :to="{ name: 'event-list-view', query: { page: page + 1, size: pageSize } }" rel="prev" v-if="hasNextPage" id="page-next">
       Next Page
     </RouterLink>
     </div>

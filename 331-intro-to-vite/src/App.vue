@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import EventListView from '@/views/EventListView.vue';
+import StudentView from '@/views/StudentView.vue';
+import AboutView from '@/views/AboutView.vue';
+import { ref } from 'vue';
+
+// Define the page size (number of events per page)
+const pageSize = ref<number>(3);
 
 </script>
 
@@ -9,7 +16,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <div class="wrapper">
       <nav>
         <!-- 1.11. Update router-link to use the name of components instead of url  -->
-        <RouterLink :to="{ name: 'event-list-view' }">Event</RouterLink> |
+        <!-- <RouterLink :to="{ name: 'event-list-view' }">Event</RouterLink> | -->
+        <RouterLink :to="{ name: 'event-list-view', query: { page: 1, size: 2 } }">Event</RouterLink> |
         <RouterLink :to="{ name: 'student' }">Student</RouterLink> |
         <RouterLink :to="{ name: 'about' }">About</RouterLink>
       </nav>
