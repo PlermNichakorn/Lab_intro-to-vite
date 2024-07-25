@@ -10,7 +10,6 @@ import NotFoundView from '@/views/NotFoundView.vue'
 import NetworkErrorView from '@/views/NetworkErrorView.vue'
 import nProgress from 'nprogress'
 import EventService from '@/services/EventService'
-import { error } from 'console'
 import { useEventStore } from '@/stores/event'
 
 const router = createRouter({
@@ -56,7 +55,6 @@ const router = createRouter({
       component: LayoutView,
       props: true,
       beforeEnter: (to) => {
-        //put API call here
         const id = parseInt(to.params.id as string)
         const eventStore = useEventStore()
         return EventService.getEvent(id)
@@ -70,7 +68,7 @@ const router = createRouter({
               name: '404-resource-view',
               params: { resource: 'event'}
             }
-          }else{
+          } else{
             return { name: 'network-error-view'}
           }
         })
