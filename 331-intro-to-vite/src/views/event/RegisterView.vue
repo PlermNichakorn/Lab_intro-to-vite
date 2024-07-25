@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import{toRefs, defineProps} from 'vue'
 import { type Event } from '@/types'
-import { ureRouter, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useMessageStore } from '@/stores/message'
 
 
@@ -16,8 +16,7 @@ const {event} = toRefs(props)
 const router = useRouter()
 const store = useMessageStore()
 const register = () => {
-  store.updatedMessage('You are successfully registered for '+
-  props.event.title)
+  store.updatedMessage('You are successfully registered for '+props.event.title)
   setTimeout(() => {
     store.resetMessage()
   }, 3000)
