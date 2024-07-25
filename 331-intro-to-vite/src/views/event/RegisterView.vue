@@ -2,6 +2,7 @@
 import{toRefs, defineProps} from 'vue'
 import { type Event } from '@/types'
 import { ureRouter, useRouter } from 'vue-router'
+import { useMessageStore } from '@/stores/message'
 
 
 
@@ -13,10 +14,14 @@ const props = defineProps<{
 //eslint-disable-next-line @typescript-eslint/no-unused-vars
 const {event} = toRefs(props)
 const router = useRouter()
+const store = useMessageStore()
 const register = () => {
-  //If the regiatration API call successful
-  //Pull back o the event deatils view
-  router.push({name: 'event-detail-view'})
+  store.updatedMessage('You are successfully registered for '+
+  props.event.title)
+  setTimeout(() => {
+    store.resetMessage()
+  }, 3000)
+  router.push({ name: 'event-detail-view', params: { id: props.event.id} })
 }
 
 </script>
