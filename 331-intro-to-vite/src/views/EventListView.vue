@@ -1,104 +1,84 @@
 <script setup lang="ts">
 import EventCard from '@/components/EventCard.vue'
-import Event from '@/types/Event'
-// import { ref } from 'vue'
-import{ computed, ref, watchEffect } from 'vue'
+import { type Event } from '@/types'
+import { RouterLink, useRoute } from 'vue-router'
+import { computed, ref, watchEffect, onMounted } from 'vue'
 import EventService from '@/services/EventService'
-import type { Axios, AxiosResponse } from 'axios';
-import { RouterLink, useRoute } from 'vue-router';
 
-const page = computed(() => parseInt(route.query.page as string) || 1)
 const pageSize = computed(() => parseInt(route.query.size as string) || 2)
-const events = ref<Event[]>([]);
+const events = ref<Event[]>(null)
 const totalEvent = ref<number>(0)
-const route = useRoute();
+const route = useRoute()
 
 const props = defineProps({
-  page:{
+  page: {
     type: Number,
     required: true
   }
 })
-EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
-  events.value = response.data
-})
-
-const fetchEvents = () => {
-    EventService.getEvents(pageSize.value, page.value).then((response: AxiosResponse<EventItem[]>) => {
-        events.value = response.data
-        totalEvent.value = parseInt(response.headers['x-total-count'])
-    })
-}
-
-// watchEffect(() => {
-//   EventService.getEvents(2,props.page).then((response: AxiosResponse<EventItem[]>) =>{
-//   events.value = response.data
-//   totalEvent.value = response.headers['x-total-count']
-// })
-// })
+const page = computed(() => props.page)
 
 watchEffect(() => {
-    fetchEvents()
+  events.value = []
+  EventService.getEvents(pageSize.value, page.value)
+    .then((response) => {
+      events.value = response.data
+      totalEvent.value = response.headers['x-total-count']
+    })
+    .catch((error) => {
+      console.error('There was an error', error)
+    })
 })
 
 const hasNextPage = computed(() => {
   // first calculate the total page
-  const totalPages = Math.ceil(totalEvent.value)
-  return props.page.valueOf() < totalPages
+  const totalPages = Math.ceil(totalEvent.value / pageSize.value)
+  return page.value < totalPages
 })
-
-
-// onMounted(() => {
-//   EventService.getEvents()
-//   .then((response) => {
-//     events.value = response.data
-//   })
-//   .catch((error) => {
-//     console.error('There was an error!', error)
-//   })
-// })
 </script>
 
 <template>
   <h1>Events For Good</h1>
-  <!-- new element -->
-  <div class="events">
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
-    <div class="pagination">
-      <RouterLink :to="{ name: 'event-list-view', query: { page: page - 1, size: pageSize } }" rel="prev" v-if="page!=1" id="page-prev">
-      Prev Page
+ 
+  <div class="events">   
+  <EventCard v-for="event in events" :key="event.id" :event="event"/>
+ 
+  <div class="pagination">
+   
+    <RouterLink :to="{name: 'event-list-view', query: {page: page - 1, size: pageSize}}" rel="prev" v-if="page != 1" id="page-prev">
+      &#60; Prev Page
     </RouterLink>
+    <RouterLink :to="{name: 'event-list-view', query: {page: page + 1, size: pageSize}}" rel="next" v-if="hasNextPage" id="page-next">
+      Next Page &#62;
+    </RouterLink>
+  </div>
 
-    <RouterLink :to="{ name: 'event-list-view', query: { page: page + 1, size: pageSize } }" rel="prev" v-if="hasNextPage" id="page-next">
-      Next Page
-    </RouterLink>
-    </div>
-    
   </div>
 </template>
 
-<style scoped> 
-.events, .events2{
+<style scoped>
+.events,
+.events2 {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.pagination{
+
+.pagination {
   display: flex;
   width: 290px;
 }
 
-.pagination a{
+.pagination a {
   flex: 1;
   text-decoration: none;
   color: #2c3e50;
 }
 
-#page-prev{
+#page-prev {
   text-align: left;
 }
 
-#page-next{
+#page-next {
   text-align: right;
-}
-</style>
+}</style>

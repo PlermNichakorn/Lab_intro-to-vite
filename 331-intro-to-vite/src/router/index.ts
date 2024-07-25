@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import EventListView from '@/views/EventListView.vue'
 import AboutView from '@/views/AboutView.vue'
 import StudentView from '@/views/StudentView.vue'
-import EventDetailView from '../views/event/EventDetailView.vue'
-import EventEditView from '@/views/event/EventEditView.vue'
-import EventRegisterView from '@/views/event/EventRegisterView.vue'
-import EventLayoutView from '@/views/event/EventLayoutView.vue'
+import DetailView from '../views/event/DetailView.vue'
+import EditView from '@/views/event/EditView.vue'
+import RegisterView from '@/views/event/RegisterView.vue'
+import LayoutView from '@/views/event/LayoutView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import NetworkErrorView from '@/views/NetworkErrorView.vue'
 
@@ -30,26 +30,44 @@ const router = createRouter({
     },
     {
       path: '/event/:id',
+      name: 'event-detail-view',
+      component: DetailView
+
+    },
+    {
+      path: '/event/:id/register',
+      name: 'event-register-view',
+      component: RegisterView
+
+    },
+    {
+      path: '/event/:id/edit',
+      name: 'event-edit-view',
+      component: EditView
+
+    },
+    {
+      path: '/event/:id',
       name: 'event-layout',
-      component: EventLayoutView,
+      component: LayoutView,
       props: true,
       children: [
         {
           path: '',
-          name: 'event-detail',
-          component: EventDetailView,
+          name: 'event-detail-view',
+          component: DetailView,
           props: true,
         },
         {
           path: 'edit',
-          name: 'event-edit',
-          component: EventEditView,
+          name: 'event-edit-view',
+          component:EditView,
           props: true
         },
         {
           path: 'register',
-          name: 'event-register',
-          component: EventRegisterView,
+          name: 'event-register-view',
+          component: RegisterView,
           props: true
         }
 
@@ -58,7 +76,7 @@ const router = createRouter({
     },
     {
       path: '/404/:resource',
-      name: '404-resource',
+      name: '404-resource-view',
       component: NotFoundView,
       props: true
     },
@@ -69,7 +87,7 @@ const router = createRouter({
     },
     {
       path: '/network-error',
-      name: 'network-error',
+      name: 'network-error-view',
       component: NetworkErrorView
     }
   ]
