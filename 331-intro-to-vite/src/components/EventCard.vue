@@ -32,7 +32,10 @@ defineProps<{
 <template>
   <RouterLink class="event-link" :to="{name: 'event-detail-view', params:{id: event.id}}">
     <div class="event-class">
-      <div class="event-card hover:scale-105 hover:shadow-lg transition-transform transition-shadow">
+      <div class="cursor-pointer border border-gray-600 p-4 w-64 mb-6 hover:scale-105 hover:shadow-lg transition-transform transition-shadow">
+        <!-- p- implement padding (1rem=16px)
+        w- windth of component
+        mb- ระยะห่างด้านล่าง -->
         <h2>{{ event.title }}</h2>
         <span>@{{ event.time }} on {{ event.date }}</span>       
       </div>
@@ -44,7 +47,7 @@ defineProps<{
 .event-card{
   padding: 20px;
   width: 250px;
-  cursor: pointer;
+  /* cursor: pointer; */
   border: 1px solid #39495c;
   margin-bottom: 18px;
 }
