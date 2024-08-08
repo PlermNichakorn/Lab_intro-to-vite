@@ -22,11 +22,11 @@ const { message } = storeToRefs(store)
       <h4>{{ message }}</h4>
     </div>
     <div class="wrapper">
-      <nav>
+      <nav class="py-6">
         <!-- 1.11. Update router-link to use the name of components instead of url  -->
         <!-- <RouterLink :to="{ name: 'event-list-view' }">Event</RouterLink> | -->
-        <RouterLink :to="{ name: 'event-list-view', query: { page: 1, size: 2 } }">Event</RouterLink> |
-        <RouterLink :to="{ name: 'student' }">Student</RouterLink> |
+        <RouterLink class="font-bold text-gray-700" exact-active-class="text-green-500" :to="{ name: 'event-list-view', query: { page: 1, size: 2 } }">Event</RouterLink> |
+        <RouterLink class="font-bold text-gray-700" exact-active-class="text-green-500" :to="{ name: 'student' }">Student</RouterLink> |
         <RouterLink :to="{ name: 'about' }">About</RouterLink>
       </nav>
     </div>
