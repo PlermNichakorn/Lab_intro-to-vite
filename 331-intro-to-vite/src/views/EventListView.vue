@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import EventCard from '@/components/EventCard.vue'
-import { type Event } from '@/types'
+import type { Event } from '@/types'
 import { RouterLink, useRoute } from 'vue-router'
 import { computed, ref, watchEffect, onMounted } from 'vue'
 import EventService from '@/services/EventService'
