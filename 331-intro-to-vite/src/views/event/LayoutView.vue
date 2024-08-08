@@ -7,8 +7,8 @@ const { event } = storeToRefs(store)
 </script>
 <template>
     <div v-if="event">
-        <h1>{{ event.title }}</h1>
-       <nav>
+        <h1 class="text-center">{{ event.title }}</h1>
+       <nav class="text-center">
             <router-link :to="{ name: 'event-detail-view'}">
                 >Details
             </router-link> |

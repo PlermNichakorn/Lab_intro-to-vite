@@ -23,7 +23,11 @@ const edit = () => {
 </script>
 
 <template>
-  <p>Edit event here</p>
+  <div class="text-center"> 
+    <p>Edit event here</p>
   <button @click="edit">Edit Me!</button>
+  </div>
+    
+  
   
 </template>
