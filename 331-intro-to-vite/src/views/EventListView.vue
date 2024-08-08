@@ -6,7 +6,7 @@ import { computed, ref, watchEffect, onMounted } from 'vue'
 import EventService from '@/services/EventService'
 
 const pageSize = computed(() => parseInt(route.query.size as string) || 2)
-const events = ref<Event[]>(null)
+const events = ref<Event[] | null>(null)
 const totalEvent = ref<number>(0)
 const route = useRoute()
 
